@@ -7,15 +7,20 @@ from dateutil import tz
 import asyncio
 import logging
 
-lastPlayed = None
-rand = random.randrange(0,5)
-MST = tz.gettz('Mountain Standard Time')
-
 class freearbys(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.config = client.config
         self.last_played_intro = None
+
+    lastPlayed = None
+    rand = random.randrange(0,5)
+    MST = tz.gettz('Mountain Standard Time')
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print('Ready!')
+        
 
         def check_game():
             # Check if a game happened yesterday and get team scores score
@@ -24,6 +29,7 @@ class freearbys(commands.Cog):
             j = r.json()
             length = j['meta']['total_count']
             if length > 0:
+                logging.info("found game")
                 # Find game scores and opposing team name
                 if j['data'][0]['home_team']['name'] == 'Jazz':
                     jazzScore = j['data'][0]['home_team_score']
@@ -49,25 +55,23 @@ class freearbys(commands.Cog):
                         count+=1
             return count
 
-
-        @tasks.loop(time=datetime.time(12, 0, 0, 0, tzinfo=MST))
+        @tasks.loop(minutes=1)
         async def free_food_message():
             time = datetime.strftime(datetime.now(), '%H:%M')
             global lastPlayed
-            if (lastPlayed == None or abs((lastPlayed - datetime.now())) > timedelta(hours=2)) and time == "12:00":
+            if (self.lastPlayed == None or abs((self.lastPlayed - datetime.now())) > timedelta(hours=2)) and time == "12:00":
                 l = check_game()
                 count = check_count()
                 if l is not None:
-                    channel = client.get_channel(self.config['channel_gamers'])
+                    channel = self.client.get_channel(self.config['channel_bot'])
                     if l[0] >= 111:
-                        await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                        await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][self.rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                        logging.info("send message for free arby's")
                     else:
-                        await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                        await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
+                        logging.info("sent message for no arby's")
                     lastPlayed = datetime.now()
-
-        @commands.Cog.listener()
-        async def on_ready(self, ctx: commands.Context):
-            free_food_message.start()
+        free_food_message.start()
     
 async def setup(client: commands.Bot):
     await client.add_cog(freearbys(client))

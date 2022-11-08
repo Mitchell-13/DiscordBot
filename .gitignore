@@ -6,3 +6,4 @@ audio/
 config.json
 __pycache__
 .vscode
+*.log
