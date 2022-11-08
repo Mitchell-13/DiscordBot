@@ -1,26 +1,38 @@
 import discord
-from discord.ext import tasks
+from discord.ext import tasks, commands
 import requests
 from datetime import datetime, timedelta
 import random
-from os import getenv
-from dotenv import load_dotenv
+import json
+import logging
+import asyncio
+import os
 
-load_dotenv()
-token = getenv('TOKEN')
-channel_gamers = 763214150423674891
-channel_bot = 361286957587890187
-role_arbys = '<@&1037279992087846952>'
-lastPlayed = None
-msg = [
-    " Free Arby's today with the Jazz app!!!",
-    " Free food alert! Use the jazz app for free Arby's all today",
-    " What do you call Arby's barbeque sauce? \nARBYque sauce!! \n\nAnyways... free food today with the Jazz app",
-    " Did you hear they had to close the Arby's in the Burj Khalifa? \n The steaks were too high \n\nGet your free Arby's today with the Jazz app.",
-    " What is a pirates favorite restaurant? \nArrrby's\n\nFree food today in the Jazz app"]
-rand = random.randrange(0,5)
+
+# Logging
+logging.basicConfig(
+    filename="jazzbot.log",
+    encoding='utf-8',
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.DEBUG,
+    datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
+# Config
+config_filename = 'config.json'
+logging.debug(f'Opening config file: {config_filename}')
+with open(config_filename, 'r') as cjson:
+    logging.debug('Loading JSON from config file.')
+    config = json.load(cjson)
+    logging.debug('Successfully loaded configuration.')
+
+# Setup client
+logging.debug('Setting up Discord client/bot.')
 intents = discord.Intents.all()
-client = discord.Client(intents=intents)
+intents.message_content = True
+client = commands.Bot(command_prefix=config['command_prefix'], intents=intents)
+client.config = config
+
 
 def check_game():
 # Check if a game happened yesterday and get team scores score
@@ -48,9 +60,9 @@ async def free_food_message():
     if (lastPlayed == None or abs((lastPlayed - datetime.now())) > timedelta(hours=2)) and time == "12:00":
         l = check_game()
         if l is not None:
-            channel = client.get_channel(channel_gamers)
+            channel = client.get_channel(config['channel_gamers'])
             if l[0] >= 111:
-                await channel.send(f"{role_arbys}\n{msg[rand]}\n\nYesterday's game score: \n{l[1]}")
+                await channel.send(f"{config['role_arbys']}\n{config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}")
             else:
                 await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}")
             lastPlayed = datetime.now()
@@ -58,6 +70,19 @@ async def free_food_message():
 # send message about game outcome
 @client.event
 async def on_ready():
-    await free_food_message.start()
+    logging.info(f'''We have logged in as {client.user}   
+Command prefix = \'{config['command_prefix']}\'''')
 
-client.run(token)
+async def main():
+    # Dynamically register cogs
+    logging.debug('Registering cogs...')
+    for folder in os.listdir('cogs'):
+        if os.path.exists(os.path.join('cogs', folder, 'cog.py')):
+            logging.debug(f'Found cog {folder}.')
+            await client.load_extension(f'cogs.{folder}.cog')
+
+    logging.debug('Starting Discord client.')
+    await client.start(config['client_token'])
+
+if __name__ == '__main__':
+    asyncio.run(main())

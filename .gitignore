@@ -1,2 +1,8 @@
+venv/
+*.mp3
+*.jpg
+img/
+audio/
 config.json
-venv
+__pycache__
+.vscode
