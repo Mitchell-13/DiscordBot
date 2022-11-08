@@ -1,10 +1,8 @@
-import discord
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 import random
 import requests
 from dateutil import tz
-import asyncio
 import logging
 
 class freearbys(commands.Cog):
@@ -19,9 +17,7 @@ class freearbys(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Ready!')
         
-
         def check_game():
             # Check if a game happened yesterday and get team scores score
             date_yesterday = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
@@ -71,6 +67,7 @@ class freearbys(commands.Cog):
                         await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
                         logging.info("sent message for no arby's")
                     lastPlayed = datetime.now()
+                    
         free_food_message.start()
     
 async def setup(client: commands.Bot):

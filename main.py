@@ -5,7 +5,6 @@ import logging
 import asyncio
 import os
 
-
 # Logging
 logging.basicConfig(
     filename="jazzbot.log",
@@ -49,3 +48,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    
