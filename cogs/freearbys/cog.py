@@ -1,5 +1,5 @@
 from discord.ext import commands, tasks
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import random
 import requests
 from dateutil import tz
@@ -9,8 +9,6 @@ class freearbys(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.config = client.config
-        self.last_played_intro = None
-        self.lastPlayed = None
         self.rand = random.randrange(0,5)
         self.MST = tz.gettz('Mountain Standard Time')
 
@@ -53,24 +51,24 @@ class freearbys(commands.Cog):
             return count
 
         # Send message every day at 12:00
-        @tasks.loop(minutes=1)
+        @tasks.loop(time=time(hour = 19, minute = 0,))
         async def free_food_message():
-            time = datetime.strftime(datetime.now(), '%H:%M')
-            global lastPlayed
-            if (self.lastPlayed == None or abs((self.lastPlayed - datetime.now())) > timedelta(hours=2)) and time == "12:00":
-                l = check_game()
+            l = check_game()
+            if l is not None:
                 count = check_count()
-                if l is not None:
-                    channel = self.client.get_channel(self.config['channel_gamers'])
-                    if l[0] >= 111:
-                        await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][self.rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
-                        logging.info("send message for free arby's")
-                    else:
-                        await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
-                        logging.info("sent message for no arby's")
-                    lastPlayed = datetime.now()
+                channel = self.client.get_channel(self.config['channel_gamers'])
+                if l[0] >= 111:
+                    await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][self.rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                    logging.info("send message for free arby's")
+                else:
+                    await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
+                    logging.info("sent message for no arby's")
 
-        free_food_message.start()
+        if free_food_message.is_running() == False:
+            logging.debug('starting loop')
+            free_food_message.start()
+        else:
+            logging.error('attempted to start task.. Already running.')
     
 async def setup(client: commands.Bot):
     await client.add_cog(freearbys(client))
