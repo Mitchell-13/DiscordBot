@@ -1,4 +1,4 @@
-# JazzBot
+# Free Arby's Discord Bot
 
 Simple discord bot that will notify the day after the jazz score more than 111 points, winning free arby's for everyone with the Jazz app
 
