@@ -55,10 +55,10 @@ class freearbys(commands.Cog):
             l = check_game()
             if l is not None:
                 count = check_count()
-                channel = self.client.get_channel(self.config['channel_gamers'])
+                channel = self.client.get_channel(self.config['channel_to_send'])
                 if l[0] >= 111:
                     rand = random.randrange(0,5)
-                    await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                    await channel.send(f"{self.config['role_to_notify']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
                     logging.info("send message for free arby's")
                 else:
                     await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
