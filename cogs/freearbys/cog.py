@@ -9,7 +9,6 @@ class freearbys(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.config = client.config
-        self.rand = random.randrange(0,5)
         self.MST = tz.gettz('Mountain Standard Time')
 
     @commands.Cog.listener()
@@ -58,7 +57,8 @@ class freearbys(commands.Cog):
                 count = check_count()
                 channel = self.client.get_channel(self.config['channel_gamers'])
                 if l[0] >= 111:
-                    await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][self.rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                    rand = random.randrange(0,5)
+                    await channel.send(f"{self.config['role_arbys']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
                     logging.info("send message for free arby's")
                 else:
                     await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
