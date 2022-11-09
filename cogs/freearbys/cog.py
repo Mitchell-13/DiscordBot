@@ -10,10 +10,9 @@ class freearbys(commands.Cog):
         self.client = client
         self.config = client.config
         self.last_played_intro = None
-
-    lastPlayed = None
-    rand = random.randrange(0,5)
-    MST = tz.gettz('Mountain Standard Time')
+        self.lastPlayed = None
+        self.rand = random.randrange(0,5)
+        self.MST = tz.gettz('Mountain Standard Time')
 
     @commands.Cog.listener()
     async def on_ready(self):
