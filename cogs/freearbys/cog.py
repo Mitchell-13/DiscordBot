@@ -28,7 +28,7 @@ class freearbys(commands.Cog):
             if length == 0:
                 return
             logging.debug(f"Found game for {date_yesterday}")
-            if j['data'][0]['home_team']['name'] != 'Jazz':
+            if j['data'][0]['home_team']['name'] == 'Jazz':
                 jazzScore = j['data'][0]['home_team_score']
                 opScore = j['data'][0]['visitor_team_score']
                 opName = j['data'][0]['visitor_team']['full_name']
@@ -55,7 +55,7 @@ class freearbys(commands.Cog):
             return count
 
         # Send message every day at 12:00
-        @tasks.loop(time=time(hour = 19, minute = 0,))
+        @tasks.loop(time=time(hour = 18, minute = 0,))
         async def free_food_message():
             global started
             started = True
