@@ -73,7 +73,7 @@ class freearbys(commands.Cog):
             logging.info("send message for free arby's")
                     
 
-        if free_food_message.is_running() and started:
+        if free_food_message.is_running() or started:
             logging.error('attempted to start task.. Already running.')
             return
         logging.debug('starting loop')
