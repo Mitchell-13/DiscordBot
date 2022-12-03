@@ -10,14 +10,10 @@ class freearbys(commands.Cog):
         self.client = client
         self.config = client.config
         self.MST = tz.gettz('Mountain Standard Time')
-    
-    started = False
 
     @commands.Cog.listener()
     async def on_ready(self):
-        
-        global started
-
+        started = False
         # Check yesterdays games to see if jazz won | returns jazz score and game result 
         def check_game():
             date_yesterday = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
@@ -57,8 +53,6 @@ class freearbys(commands.Cog):
         # Send message every day at 12:00
         @tasks.loop(time=time(hour = 18, minute = 0,))
         async def free_food_message():
-            global started
-            started = True
             l = check_game()
             if l is None:
                 return
@@ -72,11 +66,11 @@ class freearbys(commands.Cog):
             await channel.send(f"{self.config['role_to_notify']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
             logging.info("send message for free arby's")
                     
-
         if free_food_message.is_running() or started:
             logging.error('attempted to start task.. Already running.')
             return
         logging.debug('starting loop')
+        started = True
         free_food_message.start()
     
 async def setup(client: commands.Bot):
