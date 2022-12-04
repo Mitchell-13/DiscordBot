@@ -58,7 +58,7 @@ class freearbys(commands.Cog):
                 return
             count = check_count()
             channel = self.client.get_channel(self.config['channel_to_send'])
-            if l[0] <= 111:
+            if l[0] < 111:
                 await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
                 logging.info("sent message for no arby's")
                 return
