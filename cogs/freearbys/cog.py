@@ -15,6 +15,7 @@ class freearbys(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
+        global started
         # Check yesterdays games to see if jazz won | returns jazz score and game result 
         def check_game():
             date_yesterday = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
@@ -43,29 +44,27 @@ class freearbys(commands.Cog):
             logging.debug(f"status code of api query for all games: {r}")
             j = r.json()
             for games in j['data']:
-                if games['home_team']['full_name'] == "Utah Jazz":
-                    if games['home_team_score'] >= 111:
-                        count +=1
-                if games['visitor_team']['full_name'] == "Utah Jazz":
-                    if games['visitor_team_score'] >= 111:
-                        count+=1
+                if games['home_team']['full_name'] == "Utah Jazz" and games['home_team_score'] >= 111:
+                    count +=1
+                if games['visitor_team']['full_name'] == "Utah Jazz" and games['visitor_team_score'] >= 111:
+                    count+=1
             return count
 
-        # Send message every day at 12:00
-        @tasks.loop(time=time(hour = 18, minute = 0,))
+        # Send message every day at 10:00
+        @tasks.loop(time=time(hour = 17, minute = 0,))
         async def free_food_message():
-            l = check_game()
-            if l is None:
+            score = check_game()
+            if score is None:
                 return
             count = check_count()
             channel = self.client.get_channel(self.config['channel_to_send'])
-            jazz_score = l[0]
+            jazz_score = score[0]
             if jazz_score >= 111:
                 rand = random.randrange(0,5)
-                await channel.send(f"{self.config['role_to_notify']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{l[1]}\n\nArby's won this season: {count}")
+                await channel.send(f"{self.config['role_to_notify']}\n{self.config['msg'][rand]}\n\nYesterday's game score: \n{score[1]}\n\nArby's won this season: {count}")
                 logging.info("sent message for free arby's")
             else:
-                await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{l[1]}\n\nFree Arby's this season so far: {count}")
+                await channel.send(f"No free Arby's today :(\n\nYesterday's game score: \n{score[1]}\n\nFree Arby's this season so far: {count}")
                 logging.info("sent message for no arby's")
             
                     
