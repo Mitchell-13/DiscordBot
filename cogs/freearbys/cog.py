@@ -10,10 +10,11 @@ class freearbys(commands.Cog):
         self.client = client
         self.config = client.config
         self.MST = tz.gettz('Mountain Standard Time')
-
+    
+    started = False
+    
     @commands.Cog.listener()
     async def on_ready(self):
-        started = False
         # Check yesterdays games to see if jazz won | returns jazz score and game result 
         def check_game():
             date_yesterday = datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
