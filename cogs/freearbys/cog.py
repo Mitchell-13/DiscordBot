@@ -36,13 +36,16 @@ class freearbys(commands.Cog):
     def check_count(self):
         count = 0
         r = requests.get("https://balldontlie.io/api/v1/games?start_date=2022-10-19&team_ids[]=29")
-        logging.debug(f"status code of api query for all games: {r}")
         j = r.json()
-        for games in j['data']:
-            if games['home_team']['full_name'] == "Utah Jazz" and games['home_team_score'] >= 111:
-                count +=1
-            if games['visitor_team']['full_name'] == "Utah Jazz" and games['visitor_team_score'] >= 111:
-                count+=1
+        page_count = j['meta']['total_pages']
+        for i in range(page_count):
+            r = requests.get(f"https://balldontlie.io/api/v1/games?start_date=2022-10-19&team_ids[]=29&page={i + 1}")
+            data=r.json()
+            for games in data['data']:
+                if games['home_team']['full_name'] == "Utah Jazz" and games['home_team_score'] >= 111:
+                    count +=1
+                if games['visitor_team']['full_name'] == "Utah Jazz" and games['visitor_team_score'] >= 111:
+                    count+=1
         return count
 
     # Send message every day at 10:00
