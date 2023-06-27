@@ -1,5 +1,6 @@
 {
     "client_token": "",
+    "command_prefix": "@",
     "channel_to_send": 0,
     "role_to_notify": "<@&111111000000>",
     "bday-user" : "",

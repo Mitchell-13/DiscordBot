@@ -14,9 +14,9 @@ class BirthdayCog(commands.Cog):
             return
 
         #if message.author.name == self.config['bday-user']:
-        if message.author.name == "217090739253805056":
+        if message.author.name == "swiiika":
             logging.debug(f'User {message.author.name} sent a message.')
-            await message.channel.send("HAPPY 😊 BIRTHDAY 🎂 BRO!!! 😎😜😩😆 Its time 🕦 to get LIT 🔥 for your special 👉😎👈 BIRTHDAY 🎊! You finna turn UP 👆🤯 and get DOWN 👇🤩 on this BEAUTIFUL day 😩💕 because you're 👀 a CHAMP🎖and a COOL 😎 DUDE 💪!\nD**k the Birthday Boy\nBirthday dog!")
+            await message.channel.send("HAPPY 😊 BIRTHDAY 🎂 BRO!!! 😎😜😩😆 Its time 🕦 to get LIT 🔥 for your special 👉😎👈 BIRTHDAY 🎊! You finna turn UP 👆🤯 and get DOWN 👇🤩 on this BEAUTIFUL day 😩💕 because you're 👀 a CHAMP🎖and a COOL 😎 DUDE 💪!")
 
 async def setup(client: commands.Bot):
     await client.add_cog(BirthdayCog(client))
