@@ -100,10 +100,11 @@ class RoastCog(commands.Cog):
         if ctx.author.voice:
             channel = ctx.author.voice.channel
             vc = await channel.connect()
-            vc.play(discord.FFmpegPCMAudio('mp3.mp3'))
+            vc.play(discord.FFmpegPCMAudio('mp3.wav'))
             while vc.is_playing():
                 await asyncio.sleep(1)
             await vc.disconnect()
+            os.remove("mp3.mp3")
 
 
 
