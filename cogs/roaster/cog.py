@@ -64,7 +64,7 @@ class RoastCog(commands.Cog):
                 audio_config=audio_config,
             )
 
-            filename = "mp3.wav"
+            filename = "audio.wav"
             with open(filename, "wb") as out:
                 out.write(response.audio_content)
                 print(f'Generated speech saved to "{filename}"')
@@ -100,11 +100,11 @@ class RoastCog(commands.Cog):
         if ctx.author.voice:
             channel = ctx.author.voice.channel
             vc = await channel.connect()
-            vc.play(discord.FFmpegPCMAudio('mp3.wav'))
+            vc.play(discord.FFmpegPCMAudio('audio.wav'))
             while vc.is_playing():
                 await asyncio.sleep(1)
             await vc.disconnect()
-            os.remove("mp3.mp3")
+            os.remove("audio.wav")
 
 
 
