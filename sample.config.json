@@ -11,5 +11,6 @@
         " Did you hear they had to close the Arby's in the Burj Khalifa? \n The steaks were too high \n\nGet your free Arby's today with the Jazz app.",
         " What is a pirates favorite restaurant? \nArrrby's\n\nFree food today in the Jazz app"
     ],
-    "OPEN_AI_KEY" : ""
+    "OPEN_AI_KEY" : "",
+    "TTS_KEY": ""
 }
