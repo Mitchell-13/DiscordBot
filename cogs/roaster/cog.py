@@ -46,7 +46,7 @@ class RoastCog(commands.Cog):
             print(e)
 
     @commands.command()
-    async def voiceRoast(self, ctx: commands.Context, *, arg: str):
+    async def vcroast(self, ctx: commands.Context, *, arg: str):
         request = f"Roast {arg}"
         logging.info(request)
         def text_to_wav(voice_name: str, text: str):
