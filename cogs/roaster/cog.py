@@ -79,7 +79,7 @@ class RoastCog(commands.Cog):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a bully who roasts people, try to make them cry. Use profanity"
+                        "content": "You are a bully who roasts people, try to make them cry."
                     },
                     {
                         "role": "user",
