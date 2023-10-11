@@ -17,27 +17,6 @@ class RoastCog(commands.Cog):
         bot = self.client
 
     @commands.command()
-    async def daddy(self, ctx: commands.Context, *, arg: str):
-        request = f"{arg}"
-
-        try:
-
-            def generate(prompt):
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": prompt}],
-                    max_tokens=256,
-                )
-                return response
-
-            response = generate(request)
-            await ctx.send(response["choices"][0]["message"]["content"])
-
-        except Exception as e:
-            logging.error(e)
-            print(e)
-
-    @commands.command()
     async def debug(self, ctx: commands.Context, *, arg: str):
         request = f"{arg}"
 
@@ -65,7 +44,7 @@ class RoastCog(commands.Cog):
             print(e)
 
     @commands.command()
-    async def help(self, ctx: commands.Context, *, arg: str):
+    async def commands(self, ctx: commands.Context, *, arg: str):
         try:
             await ctx.send(
                 "Bot Commands:\n$roast will generate a roast\n$vcroast will generate a roast and join a Voice Channel\n$debug will debug given code\n$ask will generate a response to your input"
