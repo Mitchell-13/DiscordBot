@@ -44,7 +44,7 @@ class RoastCog(commands.Cog):
             print(e)
 
     @commands.command()
-    async def commands(self, ctx: commands.Context, *, arg: str):
+    async def cmds(self, ctx: commands.Context):
         try:
             await ctx.send(
                 "Bot Commands:\n$roast will generate a roast\n$vcroast will generate a roast and join a Voice Channel\n$debug will debug given code\n$ask will generate a response to your input"
