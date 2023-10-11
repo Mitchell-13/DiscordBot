@@ -21,106 +21,104 @@ class RoastCog(commands.Cog):
         request = f"{arg}"
 
         try:
+
             def generate(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=256,
-                            )
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=256,
+                )
                 return response
+
             response = generate(request)
-            await ctx.send(response['choices'][0]['message']['content'])
-            
-            
+            await ctx.send(response["choices"][0]["message"]["content"])
+
         except Exception as e:
             logging.error(e)
             print(e)
-
 
     @commands.command()
     async def debug(self, ctx: commands.Context, *, arg: str):
         request = f"{arg}"
 
         try:
+
             def generate(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=256,
-                            )
+                    model="gpt-4",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=256,
+                )
                 return response
+
             response = generate(request)
-            await ctx.send(response['choices'][0]['message']['content'])
-            
-            
+            await ctx.send(response["choices"][0]["message"]["content"])
+
         except Exception as e:
             logging.error(e)
-            print(e)    
+            print(e)
+
+    @commands.command()
+    async def help(self, ctx: commands.Context, *, arg: str):
+        try:
+            await ctx.send(
+                "Bot Commands:\n$roast will generate a roast\n$vcroast will generate a roast and join a Voice Channel\n$debug will debug given code\n$ask will generate a response to your input"
+            )
+
+        except Exception as e:
+            logging.error(e)
+            print(e)
 
     @commands.command()
     async def ask(self, ctx: commands.Context, *, arg: str):
         request = f"{arg}"
 
         try:
+
             def generate(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=256,
-                            )
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=256,
+                )
                 return response
+
             response = generate(request)
-            await ctx.send(response['choices'][0]['message']['content'])
-            
-            
+            await ctx.send(response["choices"][0]["message"]["content"])
+
         except Exception as e:
             logging.error(e)
-            print(e)    
+            print(e)
 
     @commands.command()
     async def roast(self, ctx: commands.Context, *, arg: str):
         request = f"Roast {arg}"
 
         try:
+
             def generate_roast(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph"
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=256,
-                            )
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=256,
+                )
                 return response
+
             response = generate_roast(request)
-            await ctx.send(response['choices'][0]['message']['content'])
-            
-            
+            await ctx.send(response["choices"][0]["message"]["content"])
+
         except Exception as e:
             logging.error(e)
             print(e)
@@ -129,6 +127,7 @@ class RoastCog(commands.Cog):
     async def vcroast(self, ctx: commands.Context, *, arg: str):
         request = f"Roast {arg}"
         logging.info(request)
+
         def text_to_wav(voice_name: str, text: str):
             language_code = "-".join(voice_name.split("-")[:2])
             text_input = tts.SynthesisInput(text=text)
@@ -150,43 +149,39 @@ class RoastCog(commands.Cog):
                 print(f'Generated speech saved to "{filename}"')
 
             return filename
-        
 
         try:
+
             def generate_roast(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph"
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=256,
-                            )
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=256,
+                )
                 return response
+
             response = generate_roast(request)
-            text = response['choices'][0]['message']['content']
+            text = response["choices"][0]["message"]["content"]
             logging.info(text)
-            mp3 =text_to_wav("en-US-Neural2-A", text)
-            
+            mp3 = text_to_wav("en-US-Neural2-A", text)
+
         except Exception as e:
             logging.error(e)
             print(e)
         if ctx.author.voice:
             channel = ctx.author.voice.channel
             vc = await channel.connect()
-            vc.play(discord.FFmpegPCMAudio('audio.wav'))
+            vc.play(discord.FFmpegPCMAudio("audio.wav"))
             while vc.is_playing():
                 await asyncio.sleep(1)
             await vc.disconnect()
             os.remove("audio.wav")
-
-
 
 
 async def setup(client: commands.Bot):
