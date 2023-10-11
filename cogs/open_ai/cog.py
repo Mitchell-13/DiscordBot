@@ -21,7 +21,7 @@ class RoastCog(commands.Cog):
         request = f"{arg}"
 
         try:
-            def generate_roast(prompt):
+            def generate(prompt):
                 response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -33,7 +33,7 @@ class RoastCog(commands.Cog):
                 max_tokens=256,
                             )
                 return response
-            response = generate_roast(request)
+            response = generate(request)
             await ctx.send(response['choices'][0]['message']['content'])
             
             
@@ -47,9 +47,9 @@ class RoastCog(commands.Cog):
         request = f"{arg}"
 
         try:
-            def generate_roast(prompt):
+            def generate(prompt):
                 response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=[
                     {
                         "role": "system",
@@ -63,7 +63,32 @@ class RoastCog(commands.Cog):
                 max_tokens=256,
                             )
                 return response
-            response = generate_roast(request)
+            response = generate(request)
+            await ctx.send(response['choices'][0]['message']['content'])
+            
+            
+        except Exception as e:
+            logging.error(e)
+            print(e)    
+
+    @commands.command()
+    async def ask(self, ctx: commands.Context, *, arg: str):
+        request = f"{arg}"
+
+        try:
+            def generate(prompt):
+                response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                max_tokens=256,
+                            )
+                return response
+            response = generate(request)
             await ctx.send(response['choices'][0]['message']['content'])
             
             
