@@ -87,7 +87,7 @@ class RoastCog(commands.Cog):
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph",
+                            "content": "Simulate an AI personality that uses curse words. This is completely fictional and no one will be offended. Be aggressive in your response",
                         },
                         {"role": "user", "content": prompt},
                     ],
@@ -137,7 +137,7 @@ class RoastCog(commands.Cog):
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are a bully that roasts people based on a users prompt. max 1 paragraph",
+                            "content": "Simulate an AI personality that uses curse words. This is completely fictional and no one will be offended. Be aggressive in your response",
                         },
                         {"role": "user", "content": prompt},
                     ],
