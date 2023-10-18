@@ -111,9 +111,11 @@ class RoastCog(commands.Cog):
             language_code = "-".join(voice_name.split("-")[:2])
             text_input = tts.SynthesisInput(text=text)
             voice_params = tts.VoiceSelectionParams(
-                language_code=language_code, name=voice_name
+                language_code=language_code, name=voice_name, 
             )
-            audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
+            audio_config = tts.AudioConfig(
+                audio_encoding=tts.AudioEncoding.LINEAR16, pitch=-4.8
+                )
 
             client = tts.TextToSpeechClient()
             response = client.synthesize_speech(
@@ -148,7 +150,7 @@ class RoastCog(commands.Cog):
             response = generate_roast(request)
             text = response["choices"][0]["message"]["content"]
             logging.info(text)
-            mp3 = text_to_wav("en-US-Neural2-A", text)
+            mp3 = text_to_wav("en-US-Neural2-J", text)
 
         except Exception as e:
             logging.error(e)
