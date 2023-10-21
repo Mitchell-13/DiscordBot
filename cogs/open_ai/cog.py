@@ -24,7 +24,7 @@ class RoastCog(commands.Cog):
 
             def generate(prompt):
                 response = openai.ChatCompletion.create(
-                    model="gpt-4",
+                    model="gpt-3.5-turbo",
                     messages=[
                         {
                             "role": "system",
