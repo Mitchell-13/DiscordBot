@@ -1,3 +1,4 @@
+'''
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta, time
 import random
@@ -67,3 +68,4 @@ class freearbys(commands.Cog):
     
 async def setup(client: commands.Bot):
     await client.add_cog(freearbys(client))
+'''
