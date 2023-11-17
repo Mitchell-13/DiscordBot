@@ -250,3 +250,6 @@ class MusicCog(commands.Cog):
             session.q.clear_queue()
         else:
             await ctx.send("Nothing is playing")
+
+async def setup(client: commands.Bot):
+    await client.add_cog(MusicCog(client))
