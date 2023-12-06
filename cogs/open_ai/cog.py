@@ -124,7 +124,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate_roast(prompt):
-                response = openai.ChatCompletion.create(
+                response = openai.chat.completion.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
