@@ -141,7 +141,7 @@ class RoastCog(commands.Cog):
             response = generate_roast(request)
             text = response.choices[0].message.content
             logging.info(text)
-            mp3 = text_to_mp3(text)
+            text_to_mp3(text)
 
         except Exception as e:
             logging.error(e)
