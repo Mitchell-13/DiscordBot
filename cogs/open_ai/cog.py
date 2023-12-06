@@ -116,10 +116,7 @@ class RoastCog(commands.Cog):
 
             filename = "output.mp3"
             response.stream_to_file(filename)
-
-            with open(filename, "wb") as out:
-                out.write(response.audio_content)
-                print(f'Generated speech saved to "{filename}"')
+            print(f'Generated speech saved to "{filename}"')
 
             return filename
 
@@ -154,7 +151,7 @@ class RoastCog(commands.Cog):
             while vc.is_playing():
                 await asyncio.sleep(1)
             await vc.disconnect()
-            os.remove("audio.wav")
+            os.remove("audio.mp3")
 
 
 async def setup(client: commands.Bot):
