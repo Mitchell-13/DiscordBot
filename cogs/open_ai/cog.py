@@ -19,30 +19,30 @@ class RoastCog(commands.Cog):
 
     @commands.command()
     async def debug(self, ctx: commands.Context, *, arg: str):
-        request = f"{arg}"
+            request = f"{arg}"
 
-        try:
+            try:
 
-            def generate(prompt):
-                response = openai.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it.",
-                        },
-                        {"role": "user", "content": prompt},
-                    ],
-                    max_tokens=256,
-                )
-                return response
+                def generate(prompt):
+                    response = openai.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it.",
+                            },
+                            {"role": "user", "content": prompt},
+                        ],
+                        max_tokens=256,
+                    )
+                    return response
 
-            response = generate(request)
-            await ctx.send(response["choices"][0]["message"]["content"])
+                response = generate(request)
+                await ctx.send(response["choices"][0]["message"]["content"])
 
-        except Exception as e:
-            logging.error(e)
-            print(e)
+            except Exception as e:
+                logging.error(e)
+                print(e)
 
     @commands.command()
     async def cmds(self, ctx: commands.Context):
@@ -156,4 +156,4 @@ class RoastCog(commands.Cog):
 
 
 async def setup(client: commands.Bot):
-    await client.add_cog(RoastCog(client))
+        await client.add_cog(RoastCog(client))
