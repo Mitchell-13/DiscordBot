@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.utils import get
 import logging
 import openai
-from openai import OpenAI
 import os
 import asyncio
 
@@ -108,8 +107,7 @@ class RoastCog(commands.Cog):
         logging.info(request)
 
         def text_to_mp3(text: str):
-            client = openai.OpenAI()
-            response = client.audio.speech.create(
+            response = openai.audio.speech.create(
                 model="tts-1",
                 voice="alloy",
                 input=text,
