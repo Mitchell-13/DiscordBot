@@ -15,7 +15,7 @@ class RoastCog(commands.Cog):
         self.config = client.config
 
         api_key = self.config["OPEN_AI_KEY"]
-        client = OpenAI(api_key=api_key)
+        self.aiclient = OpenAI(api_key=api_key)
         bot = self.client
 
     @commands.command()
@@ -63,7 +63,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate(prompt):
-                response = self.client.chat.completions.create(
+                response = self.aiclient.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=256,
@@ -84,7 +84,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate_roast(prompt):
-                response = self.client.chat.completions.create(
+                response = self.aiclient.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
@@ -111,7 +111,7 @@ class RoastCog(commands.Cog):
 
         def text_to_mp3(text: str):
             speech_file_path = Path(__file__).parent / "speech.mp3"
-            response = self.client.audio.speech.create(
+            response = self.aiclient.audio.speech.create(
                 model="tts-1",
                 voice="alloy",
                 input=text,
@@ -125,7 +125,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate_roast(prompt):
-                response = self.client.chat.completions.create(
+                response = self.aiclient.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
