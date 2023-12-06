@@ -95,10 +95,10 @@ class RoastCog(commands.Cog):
                     ],
                     max_tokens=256,
                 )
-                return response
+                return response.choices[0].message.content
 
             response = generate_roast(request)
-            await ctx.send(response.choices[0].message.content)
+            await ctx.send(response)
 
         except Exception as e:
             logging.error(e)
@@ -122,22 +122,21 @@ class RoastCog(commands.Cog):
 
             return filename
 
+        def generate_roast(prompt):
+            response = self.aiclient.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an AI that roasts people. Speak only like stereotypical Donald Trump",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=256,
+            )
+            return response
+
         try:
-
-            def generate_roast(prompt):
-                response = self.aiclient.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You are an AI that roasts people. Speak only like stereotypical Donald Trump",
-                        },
-                        {"role": "user", "content": prompt},
-                    ],
-                    max_tokens=256,
-                )
-                return response
-
             response = generate_roast(request)
             text = response.choices[0].message.content
             logging.info(text)
