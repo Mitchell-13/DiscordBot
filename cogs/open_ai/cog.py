@@ -36,10 +36,10 @@ class RoastCog(commands.Cog):
                         ],
                         max_tokens=256,
                     )
-                    return response
+                    return response.choices[0].message.content
 
                 response = generate(request)
-                await ctx.send(response.choices[0].message.content)
+                await ctx.send(response)
 
             except Exception as e:
                 logging.error(e)
@@ -68,10 +68,10 @@ class RoastCog(commands.Cog):
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=256,
                 )
-                return response
+                return response.choices[0].message.content
 
             response = generate(request)
-            await ctx.send(response.choices[0].message.content)
+            await ctx.send(response)
 
         except Exception as e:
             logging.error(e)
@@ -134,11 +134,11 @@ class RoastCog(commands.Cog):
                 ],
                 max_tokens=256,
             )
-            return response
+            return response.choices[0].message.content
 
         try:
             response = generate_roast(request)
-            text = response.choices[0].message.content
+            text = response
             logging.info(text)
             text_to_mp3(text)
 
