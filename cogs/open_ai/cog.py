@@ -97,8 +97,8 @@ class RoastCog(commands.Cog):
                 )
                 return response
 
-            response = generate_roast(request).choices[0].message.content
-            await ctx.send(response["choices"][0]["message"]["content"])
+            response = generate_roast(request)
+            await ctx.send(response.choices[0].message.content)
 
         except Exception as e:
             logging.error(e)
