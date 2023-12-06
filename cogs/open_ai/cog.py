@@ -39,7 +39,7 @@ class RoastCog(commands.Cog):
                     return response
 
                 response = generate(request)
-                await ctx.send(response["choices"][0]["message"]["content"])
+                await ctx.send(response.choices[0].message.content)
 
             except Exception as e:
                 logging.error(e)
@@ -71,7 +71,7 @@ class RoastCog(commands.Cog):
                 return response
 
             response = generate(request)
-            await ctx.send(response["choices"][0]["message"]["content"])
+            await ctx.send(response.choices[0].message.content)
 
         except Exception as e:
             logging.error(e)
@@ -139,7 +139,7 @@ class RoastCog(commands.Cog):
                 return response
 
             response = generate_roast(request)
-            text = response["choices"][0]["message"]["content"]
+            text = response.choices[0].message.content
             logging.info(text)
             mp3 = text_to_mp3(text)
 
