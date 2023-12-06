@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.utils import get
 import logging
 import openai
+from openai import OpenAI
 import os
 import asyncio
 
