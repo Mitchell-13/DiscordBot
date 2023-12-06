@@ -24,7 +24,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate(prompt):
-                response = openai.ChatCompletion.create(
+                response = openai.chat.completion.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
@@ -62,7 +62,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate(prompt):
-                response = openai.ChatCompletion.create(
+                response = openai.chat.completion.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=256,
@@ -83,7 +83,7 @@ class RoastCog(commands.Cog):
         try:
 
             def generate_roast(prompt):
-                response = openai.ChatCompletion.create(
+                response = openai.chat.completion.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
