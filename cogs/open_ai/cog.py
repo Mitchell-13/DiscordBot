@@ -5,7 +5,6 @@ import logging
 from openai import OpenAI
 import os
 import asyncio
-from pathlib import Path
 
 
 
@@ -110,7 +109,7 @@ class RoastCog(commands.Cog):
         logging.info(request)
 
         def text_to_mp3(text: str):
-            speech_file_path = Path(__file__).parent / "speech.mp3"
+            speech_file_path = "./speech.mp3"
             response = self.aiclient.audio.speech.create(
                 model="tts-1",
                 voice="alloy",
@@ -118,7 +117,7 @@ class RoastCog(commands.Cog):
             )
             filename = "speech.mp3"
             response.stream_to_file(speech_file_path)
-            print(f'Generated speech saved to "{filename}"')
+            logging.info(f'Generated speech saved to "{filename}"')
 
             return filename
 
