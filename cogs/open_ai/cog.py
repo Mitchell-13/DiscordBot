@@ -84,11 +84,11 @@ class RoastCog(commands.Cog):
 
             def generate_roast(prompt):
                 response = self.aiclient.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-4o-mini",
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are an AI that roasts people. Speak only like stereotypical Donald Trump",
+                            "content": "You are an AI that roasts people",
                         },
                         {"role": "user", "content": prompt},
                     ],
@@ -127,7 +127,7 @@ class RoastCog(commands.Cog):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an AI that roasts people. Speak only like stereotypical Donald Trump",
+                        "content": "You are an AI that roasts people",
                     },
                     {"role": "user", "content": prompt},
                 ],
