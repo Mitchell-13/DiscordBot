@@ -25,7 +25,7 @@ class RoastCog(commands.Cog):
 
                 def generate(prompt):
                     response = self.client.chat.completions.create(
-                        model="gpt-4o-mini",
+                        model="gpt-4o",
                         messages=[
                             {
                                 "role": "system",
@@ -33,7 +33,7 @@ class RoastCog(commands.Cog):
                             },
                             {"role": "user", "content": prompt},
                         ],
-                        max_tokens=256,
+                        max_tokens=512,
                     )
                     return response.choices[0].message.content
 
