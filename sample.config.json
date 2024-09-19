@@ -1,16 +1,6 @@
 {
     "client_token": "",
     "command_prefix": "@",
-    "channel_to_send": 0,
-    "role_to_notify": "<@&111111000000>",
     "bday_user" : "",
-    "msg":[
-        " Free Arby's today with the Jazz app!!!",
-        " Free food alert! Use the jazz app for free Arby's all today",
-        " What do you call Arby's barbeque sauce? \nARBYque sauce!! \n\nAnyways... free food today with the Jazz app",
-        " Did you hear they had to close the Arby's in the Burj Khalifa? \n The steaks were too high \n\nGet your free Arby's today with the Jazz app.",
-        " What is a pirates favorite restaurant? \nArrrby's\n\nFree food today in the Jazz app"
-    ],
-    "OPEN_AI_KEY" : "",
-    "TTS_KEY": ""
+    "OPEN_AI_KEY" : ""
 }
