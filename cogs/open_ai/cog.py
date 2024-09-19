@@ -25,7 +25,7 @@ class RoastCog(commands.Cog):
 
                 def generate(prompt):
                     response = self.client.chat.completions.create(
-                        model="gpt-3.5-turbo",
+                        model="gpt-4o-mini",
                         messages=[
                             {
                                 "role": "system",
@@ -63,7 +63,7 @@ class RoastCog(commands.Cog):
 
             def generate(prompt):
                 response = self.aiclient.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-4o-mini",
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=256,
                 )
@@ -123,7 +123,7 @@ class RoastCog(commands.Cog):
 
         def generate_roast(prompt):
             response = self.aiclient.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-mini",
                 messages=[
                     {
                         "role": "system",
