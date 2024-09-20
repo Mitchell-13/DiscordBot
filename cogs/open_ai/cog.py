@@ -29,16 +29,22 @@ class RoastCog(commands.Cog):
                         messages=[
                             {
                                 "role": "system",
-                                "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it.",
+                                "content": "You will be provided with a piece of code, and your task is to find and fix bugs in it",
                             },
                             {"role": "user", "content": prompt},
                         ],
-                        max_tokens=512,
+                        max_tokens=1024,
                     )
                     return response.choices[0].message.content
 
                 response = generate(request)
-                await ctx.send(response)
+                # Split the response if it's longer than 2000 characters
+                if len(response) > 2000:
+                    parts = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                    for part in parts:
+                        await ctx.send(part)
+                else:
+                    await ctx.send(response)
 
             except Exception as e:
                 logging.error(e)
@@ -65,12 +71,20 @@ class RoastCog(commands.Cog):
                 response = self.aiclient.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=[{"role": "user", "content": prompt}],
-                    max_tokens=256,
+                    max_tokens=1024,
                 )
                 return response.choices[0].message.content
 
             response = generate(request)
-            await ctx.send(response)
+
+            # Split the response if it's longer than 2000 characters
+            if len(response) > 2000:
+                parts = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                for part in parts:
+                    await ctx.send(part)
+            else:
+                await ctx.send(response)
+
 
         except Exception as e:
             logging.error(e)
