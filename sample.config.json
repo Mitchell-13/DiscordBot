@@ -1,5 +1,5 @@
 {
     "client_token": "",
-    "command_prefix": "@",
+    "command_prefix": "$",
     "OPEN_AI_KEY" : ""
 }
