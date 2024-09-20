@@ -1,8 +1,11 @@
+Here's the updated README with the section for creating the bot on Discord's developer portal:
+
+---
 
 # Snazzards Discord Bot
 
 ## Project Description
-This project is a customizable Discord bot that integrates AI functionalities using OpenAI's API
+This project is a customizable Discord bot that integrates AI functionalities using OpenAI's API.
 
 ## Features
 - AI-based responses using OpenAI.
@@ -26,7 +29,10 @@ This project is a customizable Discord bot that integrates AI functionalities us
     pip install -r requirements.txt
     ```
 
-4. **Configuration:**
+4. **Create a Discord Bot**:  
+    Before proceeding, you will need to create a bot on the [Discord Developer Portal](https://discord.com/developers/applications) and retrieve the bot token. This token will be used in the `config.json` file.
+
+5. **Configuration**:  
     - Update the `config.json` file with your bot’s token, desired command prefix, and OpenAI API key.
     - Example `config.json` structure:
     ```json
@@ -37,7 +43,7 @@ This project is a customizable Discord bot that integrates AI functionalities us
     }
     ```
 
-5. **Run the bot:**
+6. **Run the bot**:  
     ```bash
     python main.py
     ```
