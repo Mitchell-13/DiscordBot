@@ -1,4 +1,3 @@
-Here's the updated README with the section for creating the bot on Discord's developer portal:
 
 ---
 
@@ -59,6 +58,6 @@ This project is a customizable Discord bot that integrates AI functionalities us
 - `main.py`: The main script that runs the bot.
 - `config.json`: Stores the bot token, command prefix, and API keys.
 - `requirements.txt`: Contains the Python dependencies.
-- `cogs/`: Contains modular commands and features for the bot, such as the AI capabilities in `open_ai.py`.
+- `cogs/`: Contains modular commands and features for the bot, such as the AI capabilities in `open_ai/cog.py`.
 
 ---
