@@ -1,5 +1,8 @@
 .vscode
-
+.dockerignore
+compose.yaml
+Dockerfile
+README.Docker.md
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
