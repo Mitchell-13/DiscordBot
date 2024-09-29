@@ -1,4 +1,4 @@
-# Snazzards Discord Bot
+# OpenAI/Piper Discord Bot
 
 ## Project Description
 This project is a customizable Discord bot that integrates AI functionalities using OpenAI's API and Piper text-to-speech. Due to dependencies, this will not work on Windows Machines.
