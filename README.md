@@ -1,13 +1,11 @@
-
----
-
 # Snazzards Discord Bot
 
 ## Project Description
-This project is a customizable Discord bot that integrates AI functionalities using OpenAI's API.
+This project is a customizable Discord bot that integrates AI functionalities using OpenAI's API and Piper text-to-speech. Due to dependencies, this will not work on Windows Machines.
 
 ## Features
 - AI-based responses using OpenAI.
+- Text-to-speech using Piper TTS.
 - Modular design to easily add more features through cogs.
 
 ## Installation
@@ -42,22 +40,27 @@ This project is a customizable Discord bot that integrates AI functionalities us
     }
     ```
 
-6. **Run the bot**:  
-    ```bash
-    python main.py
-    ```
+6. **Piper TTS Setup**:  
+   - Download the Piper TTS model files and place them in a folder called `tts_voices/`.
+   - The model files should be named `model.onnx` and `model.onnx.json`.
+   - Ensure that both the `.onnx` and `.json` files are present in the `tts_voices/` directory.
+
+7. **Run the bot**:  
+ ```bash
+ python main.py
+ ```
 
 ## Usage
 - Once the bot is running, interact with it in your Discord server using the configured command prefix.
 - Example command:
-    ```
-    $help
-    ```
+ ```
+ $help
+ ```
 
 ## File Structure
 - `main.py`: The main script that runs the bot.
 - `config.json`: Stores the bot token, command prefix, and API keys.
 - `requirements.txt`: Contains the Python dependencies.
 - `cogs/`: Contains modular commands and features for the bot, such as the AI capabilities in `open_ai/cog.py`.
+- `tts_voices/`: Contains the Piper TTS model files (`model.onnx` and `model.onnx.json`).
 
----

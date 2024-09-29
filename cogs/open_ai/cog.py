@@ -8,23 +8,25 @@ import asyncio
 
 
 
-class RoastCog(commands.Cog):
+class Roast(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.config = client.config
 
+        # Import OPENAI API key from config file
         api_key = self.config["OPEN_AI_KEY"]
         self.aiclient = OpenAI(api_key=api_key)
-        bot = self.client
 
-    @commands.command()
+    @commands.command(
+            help="Debugs any given code"
+    )
     async def debug(self, ctx: commands.Context, *, arg: str):
+            # Get user input
             request = f"{arg}"
-
             try:
-
+                # OPENAI API call with user's input
                 def generate(prompt):
-                    response = self.client.chat.completions.create(
+                    response = self.aiclient.chat.completions.create(
                         model="gpt-4o",
                         messages=[
                             {
@@ -50,18 +52,9 @@ class RoastCog(commands.Cog):
                 logging.error(e)
                 print(e)
 
-    @commands.command()
-    async def cmds(self, ctx: commands.Context):
-        try:
-            await ctx.send(
-                "Bot Commands:\n$roast will generate a roast\n$vcroast will generate a roast and join a Voice Channel\n$debug will debug given code\n$ask will generate a response to your input"
-            )
-
-        except Exception as e:
-            logging.error(e)
-            print(e)
-
-    @commands.command()
+    @commands.command(
+            help="Ask the bot any question"
+    )
     async def ask(self, ctx: commands.Context, *, arg: str):
         request = f"{arg}"
 
@@ -90,7 +83,9 @@ class RoastCog(commands.Cog):
             logging.error(e)
             print(e)
 
-    @commands.command()
+    @commands.command(
+            help="Ask the bot to generate a roast"
+    )
     async def roast(self, ctx: commands.Context, *, arg: str):
         request = f"Roast {arg}"
 
@@ -117,23 +112,24 @@ class RoastCog(commands.Cog):
             logging.error(e)
             print(e)
 
-    @commands.command()
+    @commands.command(
+            help="Joins the voice chat to deliver generated roast"
+    )
     async def vcroast(self, ctx: commands.Context, *, arg: str):
         request = f"Roast {arg}"
         logging.info(request)
 
         def text_to_mp3(text: str):
-            speech_file_path = "./speech.mp3"
-            response = self.aiclient.audio.speech.create(
-                model="tts-1",
-                voice="alloy",
-                input=text,
-            )
-            filename = "speech.mp3"
-            response.stream_to_file(speech_file_path)
-            logging.info(f'Generated speech saved to "{filename}"')
+           
+            model_file = "tts_voices/model.onnx"
+            model_config = "tts_voices/model.onnx.json"
 
-            return filename
+            # Check if both files exist
+            if os.path.exists(model_file) and os.path.exists(model_config):
+                os.system(f"echo \"{text}\" | piper --model {model_file} --output_file speech.wav")
+                logging.info("Speech generation started.")
+            else:
+                logging.error(f"Required files not found: {model_file} or {model_config}")
 
         def generate_roast(prompt):
             response = self.aiclient.chat.completions.create(
@@ -141,7 +137,7 @@ class RoastCog(commands.Cog):
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an AI that roasts people",
+                        "content": "You are Donald Trump. You roast people. Only speak like Donald Trump",
                     },
                     {"role": "user", "content": prompt},
                 ],
@@ -161,12 +157,12 @@ class RoastCog(commands.Cog):
         if ctx.author.voice:
             channel = ctx.author.voice.channel
             vc = await channel.connect()
-            vc.play(discord.FFmpegPCMAudio("speech.mp3"))
+            vc.play(discord.FFmpegPCMAudio("speech.wav"))
             while vc.is_playing():
                 await asyncio.sleep(1)
             await vc.disconnect()
-            os.remove("speech.mp3")
+            os.remove("speech.wav")
 
 
 async def setup(client: commands.Bot):
-        await client.add_cog(RoastCog(client))
+        await client.add_cog(Roast(client))
