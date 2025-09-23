@@ -62,7 +62,7 @@ class Roast(commands.Cog):
 
             def generate(prompt):
                 response = self.aiclient.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model="gpt-5-nano",
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=1024,
                 )
@@ -93,7 +93,7 @@ class Roast(commands.Cog):
 
             def generate_roast(prompt):
                 response = self.aiclient.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model="gpt-5-nano",
                     messages=[
                         {
                             "role": "system",
@@ -133,7 +133,7 @@ class Roast(commands.Cog):
 
         def generate_roast(prompt):
             response = self.aiclient.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5-nano",
                 messages=[
                     {
                         "role": "system",
