@@ -7,8 +7,7 @@ This project is a customizable Discord bot that integrates AI functionalities us
 - AI-based responses using OpenAI.
 - Text-to-speech using Piper TTS.
 - Modular design to easily add more features through cogs.
-- Restricted Codex workflow command: `$codexchange <request>` for approved users.
-- Supports full AI PR workflow by dispatching a GitHub Actions workflow in your target repo.
+- New restricted command for AI change requests: `$codexchange <request>` creates a GitHub issue for your automation workflow and pings the reviewer you configure.
 
 ## Installation
 
@@ -41,8 +40,6 @@ This project is a customizable Discord bot that integrates AI functionalities us
         "OPEN_AI_KEY": "your-openai-api-key",
         "GITHUB_TOKEN": "github-personal-access-token",
         "GITHUB_REPO": "owner/repository",
-        "GITHUB_CHANGE_WORKFLOW_ID": "codex-pr-worker.yml",
-        "GITHUB_CHANGE_WORKFLOW_REF": "main",
         "GITHUB_CHANGE_REQUEST_LABELS": ["ai-change"],
         "CODEX_ALLOWED_USERS": [123456789012345678],
         "CODEX_REVIEWER_DISCORD_ID": 123456789012345678
@@ -73,14 +70,11 @@ This project is a customizable Discord bot that integrates AI functionalities us
  ```
  $help
  ```
-- Restricted Codex workflow command:
+- Restricted codex workflow command:
  ```
  $codexchange Update the About page copy and add a CTA button
  ```
-
-Behavior of `$codexchange`:
-- If `GITHUB_CHANGE_WORKFLOW_ID` is set: dispatches the workflow in your target repo (full workflow path).
-- If `GITHUB_CHANGE_WORKFLOW_ID` is missing: falls back to creating a labeled GitHub issue.
+ This creates a labeled GitHub issue for your AI automation pipeline and mentions the configured reviewer.
 
 ## File Structure
 - `main.py`: The main script that runs the bot.

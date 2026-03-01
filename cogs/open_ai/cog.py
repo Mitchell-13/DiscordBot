@@ -28,19 +28,6 @@ class Roast(commands.Cog):
             "Content-Type": "application/json",
         }
 
-    def _github_request(self, endpoint: str, payload: dict):
-        req = urllib.request.Request(
-            endpoint,
-            data=json.dumps(payload).encode("utf-8"),
-            headers=self._github_headers(),
-            method="POST",
-        )
-        with urllib.request.urlopen(req, timeout=20) as response:
-            raw = response.read().decode("utf-8")
-            if not raw:
-                return None
-            return json.loads(raw)
-
     def _create_change_request_issue(self, request: str, requested_by: discord.Member):
         repo = self.config.get("GITHUB_REPO", "")
         endpoint = f"https://api.github.com/repos/{repo}/issues"
@@ -58,27 +45,16 @@ class Roast(commands.Cog):
             ),
             "labels": self.config.get("GITHUB_CHANGE_REQUEST_LABELS", ["ai-change"]),
         }
-        return self._github_request(endpoint, issue_payload)
 
-    def _dispatch_codex_workflow(self, request: str, requested_by: discord.Member):
-        repo = self.config.get("GITHUB_REPO", "")
-        workflow = self.config.get("GITHUB_CHANGE_WORKFLOW_ID", "")
-        branch = self.config.get("GITHUB_CHANGE_WORKFLOW_REF", "main")
-        endpoint = (
-            f"https://api.github.com/repos/{repo}/actions/workflows/{workflow}/dispatches"
+        req = urllib.request.Request(
+            endpoint,
+            data=json.dumps(issue_payload).encode("utf-8"),
+            headers=self._github_headers(),
+            method="POST",
         )
 
-        payload = {
-            "ref": branch,
-            "inputs": {
-                "request_text": request,
-                "requested_by": str(requested_by),
-                "requested_by_id": str(requested_by.id),
-                "discord_reviewer_id": str(self.config.get("CODEX_REVIEWER_DISCORD_ID", "")),
-            },
-        }
-
-        self._github_request(endpoint, payload)
+        with urllib.request.urlopen(req, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
 
     @commands.command(help="Debugs any given code")
     async def debug(self, ctx: commands.Context, *, arg: str):
@@ -221,7 +197,7 @@ class Roast(commands.Cog):
 
     @commands.command(
         name="codexchange",
-        help="Trigger the Codex GitHub Actions workflow (restricted users only)",
+        help="Create a GitHub change request for AI/Codex automation (restricted users only)",
     )
     async def codex_change_request(self, ctx: commands.Context, *, arg: str):
         allowed_users = {int(uid) for uid in self.config.get("CODEX_ALLOWED_USERS", [])}
@@ -230,33 +206,26 @@ class Roast(commands.Cog):
             return
 
         if not self.config.get("GITHUB_REPO") or not self.config.get("GITHUB_TOKEN"):
-            await ctx.send("Bot is missing GitHub configuration for Codex requests.")
+            await ctx.send("Bot is missing GitHub configuration for change requests.")
             return
 
-        workflow_id = self.config.get("GITHUB_CHANGE_WORKFLOW_ID")
-
         try:
-            if workflow_id:
-                self._dispatch_codex_workflow(arg, ctx.author)
-                await ctx.send(
-                    "Codex workflow dispatched. I will post updates when the workflow opens a PR."
-                )
-                return
-
             issue = self._create_change_request_issue(arg, ctx.author)
             reviewer_id = self.config.get("CODEX_REVIEWER_DISCORD_ID")
             reviewer_mention = f"<@{reviewer_id}> " if reviewer_id else ""
             await ctx.send(
                 f"{reviewer_mention}New Codex change request created: {issue['html_url']}\n"
-                "No workflow id configured, so only an issue was created."
+                "I will ping you again when a PR is ready to review."
             )
         except urllib.error.HTTPError as e:
             error_body = e.read().decode("utf-8", errors="replace")
-            logging.error("GitHub API request failed: %s", error_body)
-            await ctx.send("Failed to submit the Codex request. Check bot logs for details.")
+            logging.error("GitHub issue creation failed: %s", error_body)
+            await ctx.send(
+                "Failed to create the GitHub change request. Check bot logs for details."
+            )
         except Exception as e:
-            logging.error("Unexpected error creating Codex request: %s", e)
-            await ctx.send("Failed to submit the Codex request.")
+            logging.error("Unexpected error creating change request: %s", e)
+            await ctx.send("Failed to create the GitHub change request.")
 
 
 async def setup(client: commands.Bot):
