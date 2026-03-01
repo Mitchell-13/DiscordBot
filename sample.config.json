@@ -1,5 +1,14 @@
 {
     "client_token": "",
     "command_prefix": "$",
-    "OPEN_AI_KEY" : ""
+    "OPEN_AI_KEY": "",
+    "GITHUB_TOKEN": "",
+    "GITHUB_REPO": "owner/repo",
+    "GITHUB_CHANGE_REQUEST_LABELS": [
+        "ai-change"
+    ],
+    "CODEX_ALLOWED_USERS": [
+        123456789012345678
+    ],
+    "CODEX_REVIEWER_DISCORD_ID": 123456789012345678
 }

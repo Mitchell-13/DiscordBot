@@ -7,6 +7,7 @@ This project is a customizable Discord bot that integrates AI functionalities us
 - AI-based responses using OpenAI.
 - Text-to-speech using Piper TTS.
 - Modular design to easily add more features through cogs.
+- New restricted command for AI change requests: `$codexchange <request>` creates a GitHub issue for your automation workflow and pings the reviewer you configure.
 
 ## Installation
 
@@ -36,7 +37,12 @@ This project is a customizable Discord bot that integrates AI functionalities us
     {
         "client_token": "your-discord-bot-token",
         "command_prefix": "$",
-        "OPEN_AI_KEY": "your-openai-api-key"
+        "OPEN_AI_KEY": "your-openai-api-key",
+        "GITHUB_TOKEN": "github-personal-access-token",
+        "GITHUB_REPO": "owner/repository",
+        "GITHUB_CHANGE_REQUEST_LABELS": ["ai-change"],
+        "CODEX_ALLOWED_USERS": [123456789012345678],
+        "CODEX_REVIEWER_DISCORD_ID": 123456789012345678
     }
     ```
 
@@ -56,6 +62,11 @@ This project is a customizable Discord bot that integrates AI functionalities us
  ```
  $help
  ```
+- Restricted codex workflow command:
+ ```
+ $codexchange Update the About page copy and add a CTA button
+ ```
+ This creates a labeled GitHub issue for your AI automation pipeline and mentions the configured reviewer.
 
 ## File Structure
 - `main.py`: The main script that runs the bot.
@@ -63,4 +74,3 @@ This project is a customizable Discord bot that integrates AI functionalities us
 - `requirements.txt`: Contains the Python dependencies.
 - `cogs/`: Contains modular commands and features for the bot, such as the AI capabilities in `open_ai/cog.py`.
 - `tts_voices/`: Contains the Piper TTS model files (`model.onnx` and `model.onnx.json`).
-
