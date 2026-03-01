@@ -1,0 +1,88 @@
+name: Codex PR Worker (Template)
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_text:
+        description: "Requested change from Discord"
+        required: true
+        type: string
+      requested_by:
+        description: "Discord username"
+        required: true
+        type: string
+      requested_by_id:
+        description: "Discord user id"
+        required: true
+        type: string
+      discord_reviewer_id:
+        description: "Discord reviewer id to mention"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  codex-change:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Codex edit step
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Implement your Codex CLI/API automation here."
+          echo "Request: ${{ inputs.request_text }}"
+          # Example placeholder change so PR creation path is wired:
+          mkdir -p .ai-requests
+          timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          cat <<EOF > .ai-requests/request-${{ github.run_id }}.md
+          # Codex Request
+          - requested_by: ${{ inputs.requested_by }} (${{ inputs.requested_by_id }})
+          - requested_at: ${timestamp}
+
+          ## Request
+          ${{ inputs.request_text }}
+          EOF
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "codex: apply requested change"
+          branch: "codex/request-${{ github.run_id }}"
+          title: "Codex change request: ${{ inputs.request_text }}"
+          body: |
+            ## AI Change Request
+            - Requested by: `${{ inputs.requested_by }}` (`${{ inputs.requested_by_id }}`)
+            - Source: Discord bot workflow dispatch
+
+            ### Prompt
+            ${{ inputs.request_text }}
+          labels: ai-change
+
+      - name: Notify Discord reviewer
+        if: ${{ steps.cpr.outputs.pull-request-url != '' && secrets.DISCORD_WEBHOOK_URL != '' }}
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          reviewer="${{ inputs.discord_reviewer_id }}"
+          mention=""
+          if [ -n "$reviewer" ]; then
+            mention="<@${reviewer}> "
+          fi
+
+          payload=$(cat <<EOF
+          {
+            "content": "${mention}Codex opened a PR: ${{ steps.cpr.outputs.pull-request-url }}"
+          }
+          EOF
+          )
+
+          curl -sS -X POST "$DISCORD_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
